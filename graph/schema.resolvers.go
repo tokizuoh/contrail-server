@@ -11,13 +11,13 @@ import (
 	"github.com/tokizuoh/contrail-server/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+// CreateWorkout is the resolver for the createWorkout field.
+func (r *mutationResolver) CreateWorkout(ctx context.Context, input model.NewWorkout) (*model.Workout, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+// Workouts is the resolver for the workouts field.
+func (r *queryResolver) Workouts(ctx context.Context) ([]*model.Workout, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
