@@ -13,8 +13,10 @@ import (
 // CreateWorkout is the resolver for the createWorkout field.
 func (r *mutationResolver) CreateWorkout(ctx context.Context, input model.NewWorkout) (*model.Workout, error) {
 	workout := &model.Workout{
-		Distance: input.Distance,
-		Duration: input.Duration,
+		Distance:  input.Distance,
+		Duration:  input.Duration,
+		StartDate: input.StartDate,
+		EndDate:   input.EndDate,
 	}
 	r.workouts = append(r.workouts, workout)
 	return workout, nil

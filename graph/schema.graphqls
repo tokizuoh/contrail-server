@@ -1,6 +1,8 @@
 type Workout {
   distance: Float!
   duration: Float!
+  startDate: Float!
+  endDate: Float!
 }
 
 type Query {
@@ -10,6 +12,8 @@ type Query {
 input NewWorkout {
   distance: Float!
   duration: Float!
+  startDate: Float!
+  endDate: Float!
 }
 
 type Mutation {

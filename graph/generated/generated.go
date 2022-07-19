@@ -53,8 +53,10 @@ type ComplexityRoot struct {
 	}
 
 	Workout struct {
-		Distance func(childComplexity int) int
-		Duration func(childComplexity int) int
+		Distance  func(childComplexity int) int
+		Duration  func(childComplexity int) int
+		EndDate   func(childComplexity int) int
+		StartDate func(childComplexity int) int
 	}
 }
 
@@ -112,6 +114,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Workout.Duration(childComplexity), true
+
+	case "Workout.endDate":
+		if e.complexity.Workout.EndDate == nil {
+			break
+		}
+
+		return e.complexity.Workout.EndDate(childComplexity), true
+
+	case "Workout.startDate":
+		if e.complexity.Workout.StartDate == nil {
+			break
+		}
+
+		return e.complexity.Workout.StartDate(childComplexity), true
 
 	}
 	return 0, false
@@ -182,13 +198,11 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphqls", Input: `# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type Workout {
+	{Name: "../schema.graphqls", Input: `type Workout {
   distance: Float!
   duration: Float!
+  startDate: Float!
+  endDate: Float!
 }
 
 type Query {
@@ -198,6 +212,8 @@ type Query {
 input NewWorkout {
   distance: Float!
   duration: Float!
+  startDate: Float!
+  endDate: Float!
 }
 
 type Mutation {
@@ -321,6 +337,10 @@ func (ec *executionContext) fieldContext_Mutation_createWorkout(ctx context.Cont
 				return ec.fieldContext_Workout_distance(ctx, field)
 			case "duration":
 				return ec.fieldContext_Workout_duration(ctx, field)
+			case "startDate":
+				return ec.fieldContext_Workout_startDate(ctx, field)
+			case "endDate":
+				return ec.fieldContext_Workout_endDate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Workout", field.Name)
 		},
@@ -382,6 +402,10 @@ func (ec *executionContext) fieldContext_Query_workouts(ctx context.Context, fie
 				return ec.fieldContext_Workout_distance(ctx, field)
 			case "duration":
 				return ec.fieldContext_Workout_duration(ctx, field)
+			case "startDate":
+				return ec.fieldContext_Workout_startDate(ctx, field)
+			case "endDate":
+				return ec.fieldContext_Workout_endDate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Workout", field.Name)
 		},
@@ -594,6 +618,94 @@ func (ec *executionContext) _Workout_duration(ctx context.Context, field graphql
 }
 
 func (ec *executionContext) fieldContext_Workout_duration(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Workout",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Workout_startDate(ctx context.Context, field graphql.CollectedField, obj *model.Workout) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Workout_startDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.StartDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Workout_startDate(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Workout",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Workout_endDate(ctx context.Context, field graphql.CollectedField, obj *model.Workout) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Workout_endDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EndDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Workout_endDate(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Workout",
 		Field:      field,
@@ -2386,7 +2498,7 @@ func (ec *executionContext) unmarshalInputNewWorkout(ctx context.Context, obj in
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"distance", "duration"}
+	fieldsInOrder := [...]string{"distance", "duration", "startDate", "endDate"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2406,6 +2518,22 @@ func (ec *executionContext) unmarshalInputNewWorkout(ctx context.Context, obj in
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("duration"))
 			it.Duration, err = ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "startDate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startDate"))
+			it.StartDate, err = ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "endDate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endDate"))
+			it.EndDate, err = ec.unmarshalNFloat2float64(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2547,6 +2675,20 @@ func (ec *executionContext) _Workout(ctx context.Context, sel ast.SelectionSet, 
 		case "duration":
 
 			out.Values[i] = ec._Workout_duration(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "startDate":
+
+			out.Values[i] = ec._Workout_startDate(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "endDate":
+
+			out.Values[i] = ec._Workout_endDate(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
