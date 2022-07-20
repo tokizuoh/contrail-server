@@ -12,7 +12,7 @@ jobs:
     needs: go-run-server
     runs-on: ubuntu-latest
     steps:
-      - curl localhost:8080
+      - run: curl localhost:8080
 
   # goサーバー生成
   # CLIダウンロード
