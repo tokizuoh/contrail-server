@@ -2,7 +2,7 @@ name: Dispatch schema.json to tokizuoh/contrail2
 on: [push]
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: macos-12
     steps:
       - name: check out
         uses: actions/checkout@v2
