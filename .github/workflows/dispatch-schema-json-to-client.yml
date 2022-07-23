@@ -13,11 +13,6 @@ jobs:
       - run: sleep 10
       - run: curl localhost:8080
       - run: npm --version
-  curl:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - run: curl localhost:8080
 
   # goサーバー生成
   # CLIダウンロード
