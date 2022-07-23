@@ -12,8 +12,8 @@ jobs:
       - run: go run server.go &
       - run: sleep 10
       - run: |
-          npm install -D apollo
-          apollo schema:download --endpoint=http://localhost:8080/query schema.json
+          curl -sSL https://rover.apollo.dev/nix/latest | sh
+          rover graph introspect http://localhost:8080/query --output json >> schema.json
       - run: ls
 
   # goサーバー生成
