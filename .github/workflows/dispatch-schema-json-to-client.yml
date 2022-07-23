@@ -11,9 +11,9 @@ jobs:
           go-version: '1.18.4'
       - run: go run server.go &
       - run: sleep 10
-      - run: |
-          curl -sSL https://rover.apollo.dev/nix/latest | sh
-          rover graph introspect http://localhost:8080/query --output json >> schema.json
+      - run: curl -sSL https://rover.apollo.dev/nix/latest | sh
+      - run: sleep 5
+      - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - run: ls
 
   # goサーバー生成
