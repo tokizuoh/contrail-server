@@ -9,10 +9,11 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '1.18.4'
-      - run: npm install @apollo/client graphql
       - run: go run server.go &
       - run: sleep 10
-      - run: apollo schema:download --endpoint=http://localhost:8080/query schema.json
+      - run: |
+          npm install @apollo/client graphql
+          apollo schema:download --endpoint=http://localhost:8080/query schema.json
       - run: ls
 
   # goサーバー生成
