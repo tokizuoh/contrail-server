@@ -12,6 +12,7 @@ jobs:
       - run: go run server.go &
       - run: sleep 10
       - run: curl localhost:8080
+      - run: npm --version
   curl:
     needs: setup
     runs-on: ubuntu-latest
