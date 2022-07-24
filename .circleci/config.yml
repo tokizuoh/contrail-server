@@ -9,9 +9,9 @@ jobs:
       - image: cimg/go:1.18.4
     steps:
       - checkout
-      # - run:
-      #     command: go run server.go
-      #     background: true
+      - run:
+          command: go run server.go
+          background: true
       # - run: sleep 5
       - run:
           name: "install The Apollo CLI"
