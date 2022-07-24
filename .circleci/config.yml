@@ -13,7 +13,9 @@ jobs:
       - run: sleep 10
       - run:
           name: "install rover"
-          command: curl -sSL https://rover.apollo.dev/nix/latest | sh
+          command: |
+            curl -sSL https://rover.apollo.dev/nix/latest | sh
+            echo 'export PATH=$HOME/.rover/bin:$PATH' >> $BASH_ENV
       - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - run: ls
 
