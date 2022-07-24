@@ -14,6 +14,6 @@ jobs:
           command: "uname -s"
 
 workflows:
-  dispatch-schema-to-client:
+  say-hello-workflow:
     jobs:
-      - say-hello
+      - dispatch-schema-to-client
