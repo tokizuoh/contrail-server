@@ -8,7 +8,8 @@ jobs:
       - checkout
       - run:
           name: "go run server.go"
-          command: "go run server.go &"
+          command: "go run server.go"
+          background: true
       - run: sleep 10
       - run: curl http://localhost:8080
 
