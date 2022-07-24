@@ -6,7 +6,7 @@ type Workout {
 }
 
 type Query {
-  workouts: [Workout!]!
+  workoutshoge: [Workout!]!
 }
 
 input NewWorkout {
