@@ -21,10 +21,10 @@ jobs:
             - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
       - run: git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
       - run: |
-          ls
           mv schema.json contrail2/contrail2/schema.json
-          ls
           cd contrail2
+          git config user.email ${GITHUB_EMAIL}
+          git config user.name "tokizuoh+circleci"
           git add contrail2/schema.json
           git commit -m '[CircleCI] update schema.json'
           git push origin head
