@@ -1,7 +1,7 @@
 version: 2.1
 
-orbs: 
-  node: circleci/node@5.0.2
+# orbs: 
+#   node: circleci/node@5.0.2
 
 jobs:
   dispatch-schema-to-client:
@@ -16,6 +16,7 @@ jobs:
       - run:
           name: "install The Apollo CLI"
           command: |
+            apt install npm
             npm install -g apollo
             echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
             apollo --version
