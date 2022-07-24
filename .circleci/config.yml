@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  say-hello:
+  dispatch-schema-to-client:
     docker:
       - image: cimg/base:stable
     steps:
@@ -9,6 +9,9 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+      - run:
+          name: "uname"
+          command: "uname -s"
 
 workflows:
   say-hello-workflow:
