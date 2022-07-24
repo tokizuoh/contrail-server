@@ -1,18 +1,14 @@
 version: 2.1
 
-# orbs: 
-#   node: circleci/node@5.0.2
-
 jobs:
   dispatch-schema-to-client:
     docker:
       - image: cimg/go:1.18.4
     steps:
       - checkout
-      - run:
-          command: go run server.go
-          background: true
-      # - run: sleep 5
+      # - run:
+      #     command: go run server.go
+      #     background: true
       - run:
           name: "install The Apollo CLI"
           command: |
@@ -22,23 +18,24 @@ jobs:
             # echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
             # apollo --version
       - run: npm install apollo
-      - run: npx apollo --version
-      - run: echo "---matomeru"
-      - run: exit 0
-      - run: npx apollo service:download --endpoint http://localhost:8080/query
-      - add_ssh_keys:
-          fingerprints:
-            - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
-      - run: git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
-      - run: |
-          mv schema.json contrail2/contrail2/schema.json
-          cd contrail2
-          git config user.email ${GITHUB_EMAIL}
-          git config user.name "tokizuoh+circleci"
-          git checkout -b test-circleci
-          git add contrail2/schema.json
-          git commit -m '[CircleCI] update schema.json'
-          git push origin HEAD:develop
+      - run: cat package-lock.json
+      # - run: npx apollo --version
+      # - run: echo "---matomeru"
+      # - run: exit 0
+      # - run: npx apollo service:download --endpoint http://localhost:8080/query
+      # - add_ssh_keys:
+      #     fingerprints:
+      #       - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
+      # - run: git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
+      # - run: |
+      #     mv schema.json contrail2/contrail2/schema.json
+      #     cd contrail2
+      #     git config user.email ${GITHUB_EMAIL}
+      #     git config user.name "tokizuoh+circleci"
+      #     git checkout -b test-circleci
+      #     git add contrail2/schema.json
+      #     git commit -m '[CircleCI] update schema.json'
+      #     git push origin HEAD:develop
 
 workflows:
   say-hello-workflow:
