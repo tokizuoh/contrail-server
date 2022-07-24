@@ -6,15 +6,17 @@ jobs:
       - image: cimg/go:1.18.4
     steps:
       - checkout
-      - run:
-          command: go run server.go
-          background: true
+      # - run:
+      #     command: go run server.go
+      #     background: true
       # - run: sleep 5
       - run:
-          name: "install rover"
+          name: "install The Apollo CLI"
           command: |
-            curl -sSL https://rover.apollo.dev/nix/latest | sh
-            echo 'export PATH=$HOME/.rover/bin:$PATH' >> $BASH_ENV
+            npm install -g apollo
+            echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
+            apollo --version
+      - run: exit 0
       - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - add_ssh_keys:
           fingerprints:
