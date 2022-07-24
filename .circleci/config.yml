@@ -27,6 +27,8 @@ jobs:
             cd contrail2
             git config user.email ${GITHUB_EMAIL}
             git config user.name "tokizuoh+circleci"
+            git diff –-exit-code contrail2/schema.json
+            if [ $? -eq 0 ]; then circleci step halt; fi
             git checkout -b test-circleci
             git add contrail2/schema.json
             git commit -m '[CircleCI] update schema.json'
