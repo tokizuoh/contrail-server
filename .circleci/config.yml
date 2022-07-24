@@ -17,7 +17,8 @@ jobs:
           name: "install The Apollo CLI"
           command: |
             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt install npm
+            sudo apt install nodejs
+            npm --version
             npm install -g apollo
             echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
             apollo --version
