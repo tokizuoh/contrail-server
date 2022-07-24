@@ -17,8 +17,8 @@ jobs:
             echo 'export PATH=$HOME/.rover/bin:$PATH' >> $BASH_ENV
       - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - add_ssh_keys:
-        fingerprints:
-          - $SSH_KEY_FINGERPRINT
+          fingerprints:
+            - $SSH_KEY_FINGERPRINT
       - run: git status
 
 workflows:
