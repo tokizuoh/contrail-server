@@ -10,6 +10,7 @@ jobs:
           name: "go run server.go"
           command: "go run server.go &"
       - run: sleep 5
+      - run: curl http://localhost:8080
 
 workflows:
   say-hello-workflow:
