@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   dispatch-schema-to-client:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/go:1.18.4
     steps:
       - checkout
       - run:
