@@ -7,11 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-      - run:
-          name: "uname"
-          command: "uname -s"
+          name: "go run server.go"
+          command: "go run server.go &"
+      - run: sleep 5
 
 workflows:
   say-hello-workflow:
