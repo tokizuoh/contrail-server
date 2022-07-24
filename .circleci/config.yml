@@ -18,7 +18,7 @@ jobs:
       - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - add_ssh_keys:
           fingerprints:
-            - $SSH_KEY_FINGERPRINT
+            - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
       - run: git status
 
 workflows:
