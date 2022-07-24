@@ -16,12 +16,12 @@ jobs:
       - run:
           name: "install The Apollo CLI"
           command: |
-            curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
+            sudo apt install nodejs npm
             # sudo apt install -y nodejs
-            npm --version
-            npm install -g apollo
-            echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
-            apollo --version
+            # npm --version
+            # npm install -g apollo
+            # echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
+            # apollo --version
       - run: exit 0
       - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
       - add_ssh_keys:
