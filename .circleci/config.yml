@@ -9,7 +9,7 @@ jobs:
       - run:
           command: go run server.go
           background: true
-      - run: sleep 10
+      - run: sleep 5
       - run:
           name: "install rover"
           command: |
@@ -19,7 +19,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
-      - run: git status
+      - run: git log -5
 
 workflows:
   say-hello-workflow:
