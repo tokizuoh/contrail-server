@@ -23,10 +23,10 @@ jobs:
           - v1-npm-deps
       - run: npm install apollo
       - save_cache:
-        key:
-          - v1-npm-deps-{{ checksum "package-lock.json" }}
-
-      - run: cat package-lock.json
+        key: v1-npm-deps-{{ checksum "package-lock.json" }}
+        paths:
+          - node_modules
+      - run: ls
       # - run: npx apollo --version
       # - run: echo "---matomeru"
       # - run: exit 0
