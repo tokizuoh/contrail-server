@@ -7,11 +7,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "go run server.go"
-          command: "go run server.go"
+          # name: "go run server.go"
+          command: go run server.go
           background: true
       - run: sleep 10
-      - run: curl http://localhost:8080
+      - run:
+          name: "install rover"
+          command: curl -sSL https://rover.apollo.dev/nix/latest | sh
+      - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
+      - run: ls
 
 workflows:
   say-hello-workflow:
