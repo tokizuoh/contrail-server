@@ -21,7 +21,7 @@ jobs:
             # npm install -g apollo
             # echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
             # apollo --version
-      - run: npm install -g apollo
+      - run: npm install apollo
       - run: apollo --version
       - run: echo "---matomeru"
       - run: exit 0
