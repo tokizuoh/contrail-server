@@ -28,7 +28,7 @@ jobs:
           git checkout -b test-circleci
           git add contrail2/schema.json
           git commit -m '[CircleCI] update schema.json'
-          git push origin head
+          git push origin HEAD:develop
 
 workflows:
   say-hello-workflow:
