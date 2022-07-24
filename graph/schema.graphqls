@@ -3,10 +3,11 @@ type Workout {
   duration: Float!
   startDate: Float!
   endDate: Float!
+  testNumber: Float!
 }
 
 type Query {
-  workoutshoge: [Workout!]!
+  workouts: [Workout!]!
 }
 
 input NewWorkout {
