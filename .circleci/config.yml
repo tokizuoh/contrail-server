@@ -38,7 +38,7 @@ jobs:
       - run: cd contrail2
       - run: git config user.email ${GITHUB_EMAIL}
       - run: git config user.name "tokizuoh+circleci"
-      - run: git diff --exit-code contrail2/schema.json
+      - run: cd contrail2;git diff --exit-code contrail2/schema.json
       - run: if [ $? -eq 0 ]; then circleci step halt; fi
       - run: git checkout -b test-circleci
       - run: git add contrail2/schema.json
