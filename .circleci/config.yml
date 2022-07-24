@@ -25,7 +25,7 @@ jobs:
       - run: npx apollo --version
       - run: echo "---matomeru"
       - run: exit 0
-      - run: apollo service:download --endpoint http://localhost:8080/query
+      - run: npx apollo service:download --endpoint http://localhost:8080/query
       - add_ssh_keys:
           fingerprints:
             - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
