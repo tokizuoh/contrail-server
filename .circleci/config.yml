@@ -17,7 +17,15 @@ jobs:
             # npm install -g apollo
             # echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
             # apollo --version
+      - restore_cache:
+        keys:
+          - v1-npm-deps-{{ checksum "package-lock.json" }}
+          - v1-npm-deps
       - run: npm install apollo
+      - save_cache:
+        key:
+          - v1-npm-deps-{{ checksum "package-lock.json" }}
+
       - run: cat package-lock.json
       # - run: npx apollo --version
       # - run: echo "---matomeru"
