@@ -36,15 +36,15 @@ jobs:
       - run: git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
       - run: mv schema.json contrail2/contrail2/schema.json
       - run: cd contrail2
-      - run: git config user.email ${GITHUB_EMAIL}
-      - run: git config user.name "tokizuoh+circleci"
+      - run: cd contrail2;git config user.email ${GITHUB_EMAIL}
+      - run: cd contrail2;git config user.name "tokizuoh+circleci"
       # - run: cd contrail2;git diff --exit-code contrail2/schema.json;set -e
       # - run: echo $?
       # - run: if [ $? -eq 0 ]; then circleci step halt; fi
-      - run: git checkout -b test-circleci
-      - run: git add contrail2/schema.json
-      - run: git commit -m '[CircleCI] update schema.json'
-      - run: git push origin HEAD:develop
+      - run: cd contrail2;git checkout -b test-circleci
+      - run: cd contrail2;git add contrail2/schema.json
+      - run: cd contrail2;git commit -m '[CircleCI] update schema.json'
+      - run: cd contrail2;git push origin HEAD:develop
 
 workflows:
   say-hello-workflow:
