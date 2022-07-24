@@ -18,14 +18,11 @@ jobs:
           command: |
             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
             sudo apt install -y nodejs
-            npm --version
-            # sudo apt install -y nodejs
-            # npm --version
-            # npm install -g apollo
+            npm install -g apollo
             # echo 'export PATH=$HOME/.apollo/bin:$PATH' >> $BASH_ENV
-            # apollo --version
+            apollo --version
       - run: exit 0
-      - run: rover graph introspect http://localhost:8080/query --output json >> schema.json
+      - run: apollo service:download --endpoint http://localhost:8080/query
       - add_ssh_keys:
           fingerprints:
             - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
