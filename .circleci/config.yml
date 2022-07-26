@@ -19,32 +19,19 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
-      # - run:
-      #     name: "commit schema.json to client repository"
-      #     command: |
-      #       git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
-      #       mv schema.json contrail2/contrail2/schema.json
-      #       cd contrail2
-      #       git config user.email ${GITHUB_EMAIL}
-      #       git config user.name "tokizuoh+circleci"
-      #       git diff --exit-code contrail2/schema.json
-      #       if [ $? -eq 0 ]; then circleci step halt; fi
-      #       git checkout -b test-circleci
-      #       git add contrail2/schema.json
-      #       git commit -m '[CircleCI] update schema.json'
-      #       git push origin HEAD:develop
-      - run: git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
-      - run: mv schema.json contrail2/contrail2/schema.json
-      - run: cd contrail2
-      - run: cd contrail2;git config user.email ${GITHUB_EMAIL}
-      - run: cd contrail2;git config user.name "tokizuoh+circleci"
-      # - run: cd contrail2;git diff --exit-code contrail2/schema.json;set -e
-      # - run: echo $?
-      # - run: if [ $? -eq 0 ]; then circleci step halt; fi
-      - run: cd contrail2;git checkout -b test-circleci
-      - run: cd contrail2;git add contrail2/schema.json
-      - run: cd contrail2;git commit -m '[CircleCI] update schema.json'
-      - run: cd contrail2;git push origin HEAD:develop
+      - run:
+          name: "commit schema.json to client repository"
+          command: |
+            git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
+            mv schema.json contrail2/contrail2/schema.json
+            cd contrail2
+            git config user.email ${GITHUB_EMAIL}
+            git config user.name "tokizuoh+circleci"
+          
+            git checkout -b test-circleci
+            git add contrail2/schema.json
+            git commit -m '[CircleCI] update schema.json'
+            git push origin HEAD:develop
 
 workflows:
   say-hello-workflow:
