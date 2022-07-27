@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  dispatch-schema-to-client:
+    type: boolean
+    default: false
+
 jobs:
   dispatch-schema-to-client:
     docker:
@@ -37,3 +42,4 @@ workflows:
   dispatch-schema-to-client:
     jobs:
       - dispatch-schema-to-client
+    when: << pipeline.parameters.dispatch-schema-to-client >>
