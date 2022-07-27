@@ -45,11 +45,13 @@ jobs:
           name: "test"
           working_directory: contrail2
           command: |
-            git diff --name-only 
+            git diff --name-only
             if [ `git diff --name-only | wc -w` -eq 0 ]; then
               circleci step halt;
             fi
+            set +e
             git add contrail2/schema.json
+            echo $?
             git commit -m '[CircleCI] update schema.json'
             git push origin HEAD:develop
 
