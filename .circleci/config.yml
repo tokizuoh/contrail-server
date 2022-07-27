@@ -34,7 +34,10 @@ jobs:
             git config user.name "tokizuoh+circleci"
           
             git checkout -b test-circleci
-            if [ `git diff --name-only | wc -w` -ne 0 ]; then circleci step halt; fi
+            `git diff --name-only | wc -w` -eq 0
+            if [ `git diff --name-only | wc -w` -eq 0 ]; then
+              circleci step halt;
+            fi
             git add contrail2/schema.json
             git commit -m '[CircleCI] update schema.json'
             git push origin HEAD:develop
