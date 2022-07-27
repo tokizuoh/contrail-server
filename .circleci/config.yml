@@ -35,7 +35,7 @@ jobs:
           
             git checkout -b test-circleci
             # git diff --exit-code > /dev/null
-            if ! git diff --exit-code; then
+            if git diff --exit-code; then
               circleci step halt
             fi
             echo $?
