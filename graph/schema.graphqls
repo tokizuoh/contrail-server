@@ -3,6 +3,7 @@ type Workout {
   duration: Float!
   startDate: Float!
   endDate: Float!
+  testNumber: Float!
 }
 
 type Query {

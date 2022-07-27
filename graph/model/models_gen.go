@@ -10,8 +10,9 @@ type NewWorkout struct {
 }
 
 type Workout struct {
-	Distance  float64 `json:"distance"`
-	Duration  float64 `json:"duration"`
-	StartDate float64 `json:"startDate"`
-	EndDate   float64 `json:"endDate"`
+	Distance   float64 `json:"distance"`
+	Duration   float64 `json:"duration"`
+	StartDate  float64 `json:"startDate"`
+	EndDate    float64 `json:"endDate"`
+	TestNumber float64 `json:"testNumber"`
 }

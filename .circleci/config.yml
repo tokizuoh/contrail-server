@@ -1,0 +1,45 @@
+version: 2.1
+
+parameters:
+  dispatch-schema-to-client:
+    type: boolean
+    default: false
+
+jobs:
+  dispatch-schema-to-client:
+    docker:
+      - image: cimg/go:1.18.4
+    steps:
+      - checkout
+      - run:
+          command: go run server.go
+          background: true
+      - run:
+          name: "install npm (node.js)"
+          command: |
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt install -y nodejs
+      - run: npm install apollo
+      - run: npx apollo service:download --endpoint http://localhost:8080/query
+      - add_ssh_keys:
+          fingerprints:
+            - "2b:fa:60:7f:a3:2c:d1:c9:9b:98:2d:0e:f6:81:12:a4"
+      - run:
+          name: "commit schema.json to client repository"
+          command: |
+            git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail2
+            mv schema.json contrail2/contrail2/schema.json
+            cd contrail2
+            git config user.email ${GITHUB_EMAIL}
+            git config user.name "tokizuoh+circleci"
+          
+            git checkout -b test-circleci
+            git add contrail2/schema.json
+            git commit -m '[CircleCI] update schema.json'
+            git push origin HEAD:develop
+
+workflows:
+  dispatch-schema-to-client:
+    jobs:
+      - dispatch-schema-to-client
+    when: << pipeline.parameters.dispatch-schema-to-client >>
