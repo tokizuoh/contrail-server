@@ -23,7 +23,7 @@ jobs:
       #       curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
       #       sudo apt install -y nodejs
       - node/install:
-          node-version: 16.16.0
+          node-version: 14.20.0
       - run: npm install apollo
       - run: npx apollo service:download --endpoint http://localhost:8080/query
       - add_ssh_keys:
