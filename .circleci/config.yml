@@ -5,6 +5,9 @@ parameters:
     type: boolean
     default: false
 
+orbs: 
+  node: circleci/node@5.0.2
+
 jobs:
   dispatch-schema-to-client:
     docker:
@@ -14,11 +17,8 @@ jobs:
       - run:
           command: go run server.go
           background: true
-      - run:
-          name: "install npm (node.js)"
-          command: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt install -y nodejs
+      - node/install:
+          node-version: 14.20.0
       - run: npm install apollo
       - run: npx apollo service:download --endpoint http://localhost:8080/query
       - add_ssh_keys:
@@ -35,7 +35,7 @@ jobs:
           
             git checkout -b test-circleci
             git add contrail2/schema.json
-            git commit -m '[CircleCI] update schema.json'
+            git commit -m '[CircleCI] update schema.json' || true
             git push origin HEAD:develop
 
 workflows:
