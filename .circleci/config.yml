@@ -35,7 +35,7 @@ jobs:
           
             git checkout -b test-circleci
             git add contrail2/schema.json
-            git commit -m '[CircleCI] update schema.json'
+            git commit -m '[CircleCI] update schema.json' || true
             git push origin HEAD:develop
 
 workflows:
