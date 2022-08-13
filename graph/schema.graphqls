@@ -1,22 +1,29 @@
+scalar Date
+
+enum WorkoutType {
+  cycling
+  running
+}
+
 type Workout {
+  id: ID!
   distance: Float!
   duration: Float!
-  startDate: Float!
-  endDate: Float!
-  testNumber: Float!
+  startDate: Date!
+  type: WorkoutType!
 }
 
 type Query {
   workouts: [Workout!]!
 }
 
-input NewWorkout {
+input WorkoutInput {
   distance: Float!
   duration: Float!
-  startDate: Float!
-  endDate: Float!
+  startDate: Date!
+  type: WorkoutType!
 }
 
 type Mutation {
-  createWorkout(input: NewWorkout!): Workout!
+  createWorkout(input: WorkoutInput!): Workout!
 }

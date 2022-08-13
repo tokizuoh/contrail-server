@@ -5,26 +5,20 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/tokizuoh/contrail-server/graph/generated"
 	"github.com/tokizuoh/contrail-server/graph/model"
 )
 
 // CreateWorkout is the resolver for the createWorkout field.
-func (r *mutationResolver) CreateWorkout(ctx context.Context, input model.NewWorkout) (*model.Workout, error) {
-	workout := &model.Workout{
-		Distance:  input.Distance,
-		Duration:  input.Duration,
-		StartDate: input.StartDate,
-		EndDate:   input.EndDate,
-	}
-	r.workouts = append(r.workouts, workout)
-	return workout, nil
+func (r *mutationResolver) CreateWorkout(ctx context.Context, input model.WorkoutInput) (*model.Workout, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 // Workouts is the resolver for the workouts field.
 func (r *queryResolver) Workouts(ctx context.Context) ([]*model.Workout, error) {
-	return r.workouts, nil
+	panic(fmt.Errorf("not implemented"))
 }
 
 // Mutation returns generated.MutationResolver implementation.
