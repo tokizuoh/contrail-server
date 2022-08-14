@@ -2,10 +2,10 @@ version: 2.1
 
 setup: true
 
-parameters:
-  dispatch-schema-to-client:
-    type: boolean
-    default: false
+# parameters:
+#   dispatch-schema-to-client:
+#     type: boolean
+#     default: false
 
 orbs: 
   path-filtering: circleci/path-filtering@0.1.3
