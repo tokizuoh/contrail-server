@@ -48,8 +48,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		User     func(childComplexity int, id string) int
-		Workout  func(childComplexity int, id string) int
+		Node     func(childComplexity int, id string) int
 		Workouts func(childComplexity int) int
 	}
 
@@ -70,8 +69,7 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Workouts(ctx context.Context) ([]*model.Workout, error)
-	Workout(ctx context.Context, id string) (*model.Workout, error)
-	User(ctx context.Context, id string) (*model.User, error)
+	Node(ctx context.Context, id string) (model.Node, error)
 }
 
 type executableSchema struct {
@@ -101,29 +99,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(model.UserInput)), true
 
-	case "Query.user":
-		if e.complexity.Query.User == nil {
+	case "Query.node":
+		if e.complexity.Query.Node == nil {
 			break
 		}
 
-		args, err := ec.field_Query_user_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_node_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.User(childComplexity, args["id"].(string)), true
-
-	case "Query.workout":
-		if e.complexity.Query.Workout == nil {
-			break
-		}
-
-		args, err := ec.field_Query_workout_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Workout(childComplexity, args["id"].(string)), true
+		return e.complexity.Query.Node(childComplexity, args["id"].(string)), true
 
 	case "Query.workouts":
 		if e.complexity.Query.Workouts == nil {
@@ -237,22 +223,25 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphqls", Input: `type Query {
+	{Name: "../schema.graphqls", Input: `interface Node {
+  id: ID!
+}
+
+type Query {
   workouts: [Workout!]
-  workout(id: ID!): Workout
-  user(id: ID!): User
+  node(id: ID!): Node
 }
 
 type Mutation {
   createUser(input: UserInput!): User!
 }
 
-type Workout {
+type Workout implements Node {
   id: ID!
   distance: Float!
 }
 
-type User {
+type User implements Node{
   id: ID!
   name: String!
   workouts: [Workout!]!
@@ -303,22 +292,7 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_user_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_workout_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Query_node_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 string
@@ -481,8 +455,8 @@ func (ec *executionContext) fieldContext_Query_workouts(ctx context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_workout(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_workout(ctx, field)
+func (ec *executionContext) _Query_node(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_node(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -495,7 +469,7 @@ func (ec *executionContext) _Query_workout(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Workout(rctx, fc.Args["id"].(string))
+		return ec.resolvers.Query().Node(rctx, fc.Args["id"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -504,25 +478,19 @@ func (ec *executionContext) _Query_workout(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*model.Workout)
+	res := resTmp.(model.Node)
 	fc.Result = res
-	return ec.marshalOWorkout2ᚖgithubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐWorkout(ctx, field.Selections, res)
+	return ec.marshalONode2githubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐNode(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_workout(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_node(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Workout_id(ctx, field)
-			case "distance":
-				return ec.fieldContext_Workout_distance(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Workout", field.Name)
+			return nil, errors.New("FieldContext.Child cannot be called on type INTERFACE")
 		},
 	}
 	defer func() {
@@ -532,67 +500,7 @@ func (ec *executionContext) fieldContext_Query_workout(ctx context.Context, fiel
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_workout_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_user(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().User(rctx, fc.Args["id"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.User)
-	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_user(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "workouts":
-				return ec.fieldContext_User_workouts(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_user_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Query_node_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -2795,6 +2703,29 @@ func (ec *executionContext) unmarshalInputWorkoutInput(ctx context.Context, obj 
 
 // region    ************************** interface.gotpl ***************************
 
+func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj model.Node) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.Workout:
+		return ec._Workout(ctx, sel, &obj)
+	case *model.Workout:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._Workout(ctx, sel, obj)
+	case model.User:
+		return ec._User(ctx, sel, &obj)
+	case *model.User:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._User(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
@@ -2877,7 +2808,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Concurrently(i, func() graphql.Marshaler {
 				return rrm(innerCtx)
 			})
-		case "workout":
+		case "node":
 			field := field
 
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
@@ -2886,27 +2817,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_workout(ctx, field)
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
-			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return rrm(innerCtx)
-			})
-		case "user":
-			field := field
-
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_user(ctx, field)
+				res = ec._Query_node(ctx, field)
 				return res
 			}
 
@@ -2940,7 +2851,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var userImplementors = []string{"User"}
+var userImplementors = []string{"User", "Node"}
 
 func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *model.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
@@ -2982,7 +2893,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 	return out
 }
 
-var workoutImplementors = []string{"Workout"}
+var workoutImplementors = []string{"Workout", "Node"}
 
 func (ec *executionContext) _Workout(ctx context.Context, sel ast.SelectionSet, obj *model.Workout) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, workoutImplementors)
@@ -3769,6 +3680,13 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) marshalONode2githubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐNode(ctx context.Context, sel ast.SelectionSet, v model.Node) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Node(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -3783,13 +3701,6 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	}
 	res := graphql.MarshalString(*v)
 	return res
-}
-
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._User(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOWorkout2ᚕᚖgithubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐWorkoutᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Workout) graphql.Marshaler {
@@ -3837,13 +3748,6 @@ func (ec *executionContext) marshalOWorkout2ᚕᚖgithubᚗcomᚋtokizuohᚋcont
 	}
 
 	return ret
-}
-
-func (ec *executionContext) marshalOWorkout2ᚖgithubᚗcomᚋtokizuohᚋcontrailᚑserverᚋgraphᚋmodelᚐWorkout(ctx context.Context, sel ast.SelectionSet, v *model.Workout) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Workout(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

@@ -6,6 +6,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/tokizuoh/contrail-server/graph/generated"
 	"github.com/tokizuoh/contrail-server/graph/model"
@@ -39,7 +40,18 @@ func (r *queryResolver) Workouts(ctx context.Context) ([]*model.Workout, error) 
 	return r.workouts, nil
 }
 
-// Workout is the resolver for the workout field.
+// Node is the resolver for the node field.
+func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
+	arr := strings.Split(id, ":")
+	switch arr[0] {
+	case "User":
+		return r.User(ctx, id)
+	case "Workout":
+		return r.Workout(ctx, id)
+	}
+	panic(fmt.Errorf("不正なIDだよ〜"))
+}
+
 func (r *queryResolver) Workout(ctx context.Context, id string) (*model.Workout, error) {
 	for _, workout := range r.workouts {
 		if workout.ID == id {
@@ -49,7 +61,6 @@ func (r *queryResolver) Workout(ctx context.Context, id string) (*model.Workout,
 	return nil, nil
 }
 
-// User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	for _, user := range r.users {
 		if user.ID == id {

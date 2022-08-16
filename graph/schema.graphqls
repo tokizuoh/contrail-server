@@ -1,19 +1,22 @@
+interface Node {
+  id: ID!
+}
+
 type Query {
   workouts: [Workout!]
-  workout(id: ID!): Workout
-  user(id: ID!): User
+  node(id: ID!): Node
 }
 
 type Mutation {
   createUser(input: UserInput!): User!
 }
 
-type Workout {
+type Workout implements Node {
   id: ID!
   distance: Float!
 }
 
-type User {
+type User implements Node{
   id: ID!
   name: String!
   workouts: [Workout!]!

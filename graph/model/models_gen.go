@@ -2,11 +2,17 @@
 
 package model
 
+type Node interface {
+	IsNode()
+}
+
 type User struct {
 	ID       string     `json:"id"`
 	Name     string     `json:"name"`
 	Workouts []*Workout `json:"workouts"`
 }
+
+func (User) IsNode() {}
 
 type UserInput struct {
 	Name     string          `json:"name"`
@@ -17,6 +23,8 @@ type Workout struct {
 	ID       string  `json:"id"`
 	Distance float64 `json:"distance"`
 }
+
+func (Workout) IsNode() {}
 
 type WorkoutInput struct {
 	Distance float64 `json:"distance"`
