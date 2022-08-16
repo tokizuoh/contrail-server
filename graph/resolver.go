@@ -8,4 +8,7 @@ import "github.com/tokizuoh/contrail-server/graph/model"
 
 type Resolver struct {
 	workouts []*model.Workout
+	users    []*model.User
+	wcnt     int
+	ucnt     int
 }

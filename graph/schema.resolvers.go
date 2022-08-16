@@ -5,27 +5,58 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/tokizuoh/contrail-server/graph/generated"
 	"github.com/tokizuoh/contrail-server/graph/model"
 )
 
-// CreateWorkout is the resolver for the createWorkout field.
-func (r *mutationResolver) CreateWorkout(ctx context.Context, input model.WorkoutInput) (*model.Workout, error) {
-	workout := &model.Workout{
-		Distance:  input.Distance,
-		Duration:  input.Duration,
-		StartDate: input.StartDate,
-		Type:      input.Type,
-		ID:        "TODO",
+// CreateUser is the resolver for the createUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.UserInput) (*model.User, error) {
+	var workouts []*model.Workout
+	for _, iw := range input.Workouts {
+		nw := model.Workout{
+			ID:       fmt.Sprintf("Workout:%d", r.wcnt),
+			Distance: iw.Distance,
+		}
+		r.wcnt += 1
+		r.workouts = append(r.workouts, &nw)
+		workouts = append(workouts, &nw)
 	}
-	r.workouts = append(r.workouts, workout)
-	return workout, nil
+
+	user := model.User{
+		ID:       fmt.Sprintf("User:%d", r.ucnt),
+		Name:     input.Name,
+		Workouts: workouts,
+	}
+	r.ucnt += 1
+	r.users = append(r.users, &user)
+	return &user, nil
 }
 
 // Workouts is the resolver for the workouts field.
 func (r *queryResolver) Workouts(ctx context.Context) ([]*model.Workout, error) {
 	return r.workouts, nil
+}
+
+// Workout is the resolver for the workout field.
+func (r *queryResolver) Workout(ctx context.Context, id string) (*model.Workout, error) {
+	for _, workout := range r.workouts {
+		if workout.ID == id {
+			return workout, nil
+		}
+	}
+	return nil, nil
+}
+
+// User is the resolver for the user field.
+func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+	for _, user := range r.users {
+		if user.ID == id {
+			return user, nil
+		}
+	}
+	return nil, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
