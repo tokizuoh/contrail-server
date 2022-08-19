@@ -28,7 +28,7 @@ jobs:
           name: "commit schema.json to client repository"
           command: |
             git clone https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/tokizuoh/contrail
-            mv schema.json contrail/contrail/generated/schema.json
+            mv schema.json contrail/contrail/contrail/generated/schema.json
             cd contrail
             git config user.email ${GITHUB_EMAIL}
             git config user.name "tokizuoh+circleci"
