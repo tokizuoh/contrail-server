@@ -25,5 +25,5 @@ input WorkoutInput {
 }
 
 type Mutation {
-  createWorkout(input: WorkoutInput!): Workout!
+  createWorkouts(input: [WorkoutInput!]!): Workout!
 }
